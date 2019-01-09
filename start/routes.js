@@ -16,10 +16,18 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+Route.group(() => {
+  Route.get('/', () => {
+    return { greeting: 'Hello world in JSON' }
+  })
+  
+  Route.get('/hello', async () => {
+    return { name: 'Hello World form Docker With AdonisJS'}
+  })
 
-Route.get('/hello', async () => {
-  return { name: 'Hello World form Docker With AdonisJS'}
-})
+  Route
+    .resource('users', 'UserController')
+    .validator(new Map([
+      ['users.store', 'StoreUser']
+    ]))
+}).prefix('api/v1')

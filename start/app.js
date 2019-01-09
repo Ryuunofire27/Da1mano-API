@@ -15,7 +15,9 @@ const providers = [
   '@adonisjs/auth/providers/AuthProvider',
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
-  '@adonisjs/lucid/providers/LucidProvider'
+  'adonis-mongoose-model/providers/MongooseProvider',
+  '@adonisjs/validator/providers/ValidatorProvider',
+  'adonis-mongo-rules-validator/providers/MongoRulesProvider'
 ]
 
 /*
@@ -28,7 +30,7 @@ const providers = [
 |
 */
 const aceProviders = [
-  '@adonisjs/lucid/providers/MigrationsProvider'
+  //'@adonisjs/lucid/providers/MigrationsProvider'
 ]
 
 /*
