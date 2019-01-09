@@ -28,6 +28,9 @@ Route.group(() => {
   Route
     .resource('users', 'UserController')
     .validator(new Map([
-      ['users.store', 'StoreUser']
+      ['users.store', 'StoreUser'],
+      ['users.show', 'ShowUser'],
+      ['users.update', 'UpdateUser'],
+      ['users.destroy', 'ShowUser']
     ]))
 }).prefix('api/v1')

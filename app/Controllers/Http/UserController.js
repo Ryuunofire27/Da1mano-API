@@ -20,18 +20,8 @@ class UserController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-  }
-
-  /**
-   * Render a form to be used for creating a new user.
-   * GET users/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+    const users = await User.find();
+    response.status(200).json(users)
   }
 
   /**
@@ -52,12 +42,9 @@ class UserController {
 
     const newUser = new User(user);
 
-    console.log({
-      user,
-      newUser
-    })
+    await newUser.save();
 
-    return response.status(201).send(newUser);
+    return response.status(201).json(newUser);
 
   }
 
@@ -71,18 +58,11 @@ class UserController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-  }
+    const user = await User.findById(params.id);
 
-  /**
-   * Render a form to update an existing user.
-   * GET users/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+    if(!user) return response.status(404).json({ msg: 'Usuario no encontrado' });
+    
+    return response.json(user);
   }
 
   /**
@@ -94,6 +74,23 @@ class UserController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const userInfo = request.only(['name', 'lastName', 'email', 'picture', 'country', 'city', 'phone']);
+
+    const user = await User.findById(params.id);
+
+    if(!user) return response.status(404).json({ msg: 'Usuario no encontrado' });
+
+    user.name = userInfo.name || user.name;
+    user.lastName = userInfo.lastName || user.lastName;
+    user.email = userInfo.email || user.email;
+    user.picture = userInfo.picture || user.picture;
+    user.city = userInfo.city || user.city;
+    user.phone = userInfo.phone || user.phone;
+    user.country = userInfo.country || user.country;
+
+    const savedUser = await user.save();
+
+    return response.status(201).json(savedUser);
   }
 
   /**
@@ -105,6 +102,9 @@ class UserController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const user = await User.findById(params.id);
+    await user.remove();
+    return response.json({ msg: 'Usuario eliminado satisfactoriamente' });
   }
 }
 

@@ -1,13 +1,17 @@
 'use strict'
 
-class StoreUser {
+class UpdateUser {
   get rules () {
+    const { id } = this.ctx.params;
     return {
+      _id: `isValidMongo:users,_id,${id}`,
       name: 'required',
       lastName: 'required',
-      email: 'required|email|uniqueMongo:users,email',
-      password: 'required|min:8',
-      confirmPassword: 'required|min:8'
+      email: `required|email|uniqueMongo:users,email,_id,${id}`,
+      country: 'string',
+      city: 'string',
+      phone: 'number',
+      picture: 'url'
     }
   }
 
@@ -18,10 +22,10 @@ class StoreUser {
       'email.required': 'El correo es requerido',
       'email.email': 'El correo ingresado no es valido',
       'email.uniqueMongo': 'El correo ingresado ya ha sido registrado por otro usuario',
-      'password.required': 'La contraseña es requerida',
-      'password.min': 'La contraseña debe tener mas de 8 digitos',
-      'confirmPassword.required': 'La contraseña de confirmación es requerida',
-      'confirmPassword.min': 'La contraseña de confirmación debe tener mas de 8 digitos'
+      'phone.number': 'El telefono debe contener solo numeros',
+      'city.string': 'La ciudad debe contener solo letras',
+      'country.string': 'El pais debe contener solo letras',
+      'picture.url': 'La foto debe ser un url valido'
     }
   }
 
@@ -30,4 +34,4 @@ class StoreUser {
   }
 }
 
-module.exports = StoreUser
+module.exports = UpdateUser
